@@ -18,11 +18,13 @@ export default function StudySpaceDetail(){
     }, [id]);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/map/treats/?lat=${space.lat}&lng=${space.long}`)
-            .then((res) => res.json())
-            .then((data) => setSweetLocations(data))
-            .catch((err) => console.error("Glitch in the system!", err));
-    }, [id]);
+        if (space.lat && space.long) {
+            fetch(`http://localhost:8000/api/map/treats/?lat=${space.lat}&lng=${space.long}`)
+                .then((res) => res.json())
+                .then((data) => setSweetLocations(data))
+                .catch((err) => console.error("Glitch in the system!", err));
+        }
+    }, [space.lat, space.long]);
 
     console.log(sweetLocations);
     
@@ -36,17 +38,24 @@ export default function StudySpaceDetail(){
     return (
         <>
             <StudySpace {...space}/>
-            <div className='row justify-content-center align-items-center'>
-                <div className='col-md-6 justify-content-center'>
-                    <Facilities items={space.facilities} />
+            <div className='container'>
+                <div className='row justify-content-center align-items-center'>
+                    <div className='row'>
+                        <div className='col-md-6 justify-content-center py-4'>
+                            <Facilities items={space.facilities} />
+                        </div>
+                    </div>
+
+                    <CandyDivider />
+                    <div className='row p-5'>
+                        <div className='col'>
+                            <SpacesMap spaces={sweetLocations.treats} center={[space.lat, space.long]} />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <CandyDivider />
-            <div className='row p-5'>
-                <div className='col'>
-                    <SpacesMap spaces={sweetLocations.treats} center={[space.lat, space.long]} />
-                </div>
-            </div>
+            
+            
         </>
     )
 }
