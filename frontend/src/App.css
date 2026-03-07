@@ -1,38 +1,100 @@
-.App {
-  text-align: center;
+/* Import a bubbly font for that retro game feel */
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Varela+Round&display=swap');
+
+:root {
+    --strawberry-pink: #ff4d94;
+    --mint-green: #2be5c0;
+    --grape-purple: #8e44ad;
+    --lemon-yellow: #f1c40f;
+    --glaze-white: rgba(255, 255, 255, 0.9);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+    background-color: #ffeef8; /* Pale pink background */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* The Main Card */
+.card-candy {
+    border: 6px solid var(--strawberry-pink);
+    border-radius: 25px;
+    background: white;
+    overflow: hidden;
+    font-family: 'Varela Round', sans-serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Retro Candy Stripe Header */
+.candy-stripe {
+    background: repeating-linear-gradient(
+        45deg,
+        #ff4d94,
+        #ff4d94 10px,
+        #ff85b3 10px,
+        #ff85b3 20px
+    );
+    color: white;
+    text-shadow: 2px 2px #c02c6b;
+    padding: 15px;
 }
 
-.App-link {
-  color: #61dafb;
+.sugar-font {
+    font-family: 'Bungee', cursive;
+    letter-spacing: 1px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Buttons that look like gummy candies */
+.btn-sugar {
+    background-color: var(--mint-green);
+    color: #000;
+    border: none;
+    border-bottom: 5px solid #23b599;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: all 0.1s ease;
+}
+
+.btn-sugar:active {
+    transform: translateY(3px);
+    border-bottom: 2px solid #23b599;
+}
+
+/* The "Big Race" Button */
+.btn-go-time {
+    background-color: var(--lemon-yellow);
+    font-family: 'Bungee', cursive;
+    font-size: 1.2rem;
+    padding: 12px;
+    border: 3px solid #d4ac0d;
+    border-radius: 50px;
+    color: #222;
+    box-shadow: 0 4px 15px rgba(241, 196, 15, 0.4);
+}
+
+.btn-go-time:hover {
+    background-color: #f4d03f;
+    transform: scale(1.02);
+}
+
+/* Glazed Input Fields */
+.input-glaze {
+    border: 3px solid #eee;
+    border-radius: 15px !important;
+    background-color: #fff9fc;
+}
+
+.glaze-label {
+    background-color: var(--grape-purple);
+    color: white;
+    border: none;
+    border-radius: 15px 0 0 15px !important;
+}
+
+/* Add some "Sprinkles" effect to the background if you want */
+.card-candy::after {
+    content: "•";
+    position: absolute;
+    color: var(--mint-green);
+    font-size: 40px;
+    top: -10px;
+    right: 20px;
+    opacity: 0.3;
 }
