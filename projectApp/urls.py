@@ -1,5 +1,6 @@
 from django.urls import path
-from . import views
+from .views import studyspaces_list
 
 urlpatterns = [
+    path("studyspaces/", studyspaces_list),
 ]

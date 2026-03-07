@@ -43,31 +43,39 @@ class Studyspaces(models.Model):
 
     
     name = models.CharField(max_length=100)
-    indoors = models.BooleanField(default = False)
-    wifi = models.BooleanField(default = False)
+    indoors = models.BooleanField(default = False, blank=True, null = True)
+    wifi = models.BooleanField(default = False, blank=True, null = True)
     temperature = models.CharField(
         max_length = 1000,
-        choices = temp_choices
+        choices = temp_choices,
+        blank=True,
+        null = True
 )
     plugsockets = models.BooleanField(default = False)
     windows = models.CharField(
         max_length = 1000,
-        choices = window_choices 
+        choices = window_choices,
+        blank=True, 
+        null = True 
 )
     sound = models.CharField(
         max_length = 1000, 
-        choices = sound_choices
+        choices = sound_choices,
+        blank=True, 
+        null = True
 )
     description = models.CharField(max_length= 1000) 
     ambience = models.CharField(
     max_length=1000,
-    choices=ambience_choices
+    choices=ambience_choices,
+    blank=True, 
+    null = True
 )
     
-    in_house_food = models.BooleanField(default = False)
-    pay_to_enter = models.BooleanField(default = False)
-    public = models.BooleanField(default = False)
-    accessibility = models.BooleanField(default = False)
+    in_house_food = models.BooleanField(default = False, blank=True, null = True)
+    pay_to_enter = models.BooleanField(default = False, blank=True, null = True)
+    public = models.BooleanField(default = False, blank=True, null = True)
+    accessibility = models.BooleanField(default = False, blank=True, null = True)
     opening_time = models.TimeField(null=True, blank=True)
     closing_time = models.TimeField(null=True, blank=True)
     rating = models.IntegerField(
