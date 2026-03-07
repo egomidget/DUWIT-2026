@@ -4,12 +4,17 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 
 import App from "./App";
+import StudySpaceDetail from "./pages/StudySpaceDetail";
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <App />,
   },
+  {
+    path: "/space/:id",
+    element: <StudySpaceDetail />
+  }
 ]);
 
 const root = document.getElementById("root");
