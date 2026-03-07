@@ -3,6 +3,21 @@ from django.http import JsonResponse
 
 # Create your views here.
 
+def study_sapce_api_dumby(request):
+    data = {
+            "id": 1,
+            "name": "The Marshmallow Lounge",
+            "location": "Sector 4, Candy County",
+            "image_url": "https://images.unsplash.com/photo-1497366216548-37526070297c",
+            "rating": 4.8,
+            "sugar_level": "Quiet",
+            "nitro_boost": "900 Mbps",
+            "outlets": "Plenty",
+            "description": "A super-soft spot for high-speed coding sessions. Features ergonomic gumdrop chairs.",
+            "is_open": True,
+    }
+    return JsonResponse(data, safe=False)
+
 def study_spaces_api_dumby(request):
     data = [
         {
