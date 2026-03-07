@@ -14,6 +14,17 @@ def studyspaces_list(request):
     serializer = SpacesSerializer(spaces, many=True)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def space_options(request):
+    return Response({
+        "temperature": [choice[0] for choice in Studyspaces.temp_choices],
+        "windows": [choice[0] for choice in Studyspaces.window_choices],
+        "sound": [choice[0] for choice in Studyspaces.sound_choices],
+        "ambience": [choice[0] for choice in Studyspaces.ambience_choices],
+        "rating": [choice[0] for choice in Studyspaces.rating_choices],
+    })
+
 def study_sapce_api_dumby(request):
     data = {
             "id": 1,
