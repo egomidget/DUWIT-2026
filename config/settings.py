@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+#stuff so api key can be found
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent #identify root
+ENV_FILE_PATH = BASE_DIR / 'config' / '.development.env'
+load_dotenv(dotenv_path=ENV_FILE_PATH)
+GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY') #storing key in a varible
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
