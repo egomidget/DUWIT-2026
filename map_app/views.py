@@ -7,13 +7,14 @@ from django.conf import settings
 # Create your views here.
 def get_sweet_treats(reuqest):
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+    print(f"DEBUG: My key is {api_key}") # This will show up in your TERMINAL, not the browser
 
     #centering in durham for now
     lat = "54.7651"
     lng = "-1.5772"
     
     #2km from durham center search radius for now
-    radius = 2000 
+    radius = 5000 
 
     #request to google
     url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=2{radius}&type=cafe&keyword=bakery|dessert|sweets&key={api_key}"
