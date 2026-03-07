@@ -98,3 +98,88 @@ body {
     right: 20px;
     opacity: 0.3;
 }
+
+
+
+/* Color Overrides & New Classes */
+.text-pink { color: var(--strawberry-pink); }
+
+.study-card-rush {
+    border: 5px solid white;
+    outline: 5px solid var(--strawberry-pink); /* Double border look */
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.space-hero-img {
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 5px solid var(--mint-green);
+}
+
+/* Floating Status Badge */
+.status-badge-mint {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--mint-green);
+    color: #222;
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-family: 'Bungee', cursive;
+    transform: rotate(3deg);
+}
+
+/* Rating Bubble */
+.rating-bubble {
+    background: var(--lemon-yellow);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 3px dashed var(--strawberry-pink);
+    font-size: 1.2rem;
+}
+
+/* Divider that looks like a candy rope */
+.candy-divider {
+    height: 8px;
+    background: repeating-linear-gradient(
+        to right,
+        var(--mint-green),
+        var(--mint-green) 15px,
+        var(--lemon-yellow) 15px,
+        var(--lemon-yellow) 30px
+    );
+    border: none;
+    border-radius: 10px;
+    opacity: 0.8;
+}
+
+/* Attribute Boxes */
+.attr-box {
+    background: #fff0f7;
+    padding: 10px;
+    border-radius: 15px;
+    border: 2px solid var(--glaze-white);
+}
+
+.small-head {
+    font-size: 0.9rem;
+    color: var(--grape-purple);
+}
+
+.btn-outline-sugar {
+    border: 3px solid var(--mint-green);
+    color: var(--mint-green);
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+.btn-outline-sugar:hover {
+    background: var(--mint-green);
+    color: white;
+}
