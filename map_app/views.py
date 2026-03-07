@@ -36,11 +36,6 @@ def get_sweet_treats(request):
                     'location_type': 'sweet_treat' # Ensuring it's tagged correctly!
                 }
             )
-            if created:
-                print(f"NEW: Saved {obj.name} to the database!")
-            else:
-                print(f"EXISTING: Found {obj.name} in the database, skipping save.")
-
             #adding to return list
             treat_spots.append({
                 'name': obj.name,
