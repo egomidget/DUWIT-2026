@@ -1,14 +1,14 @@
 export default function Card({header, children}) {
   return (
-    <div class="card card-candy shadow">
+    <div className="card card-candy shadow">
         {
         header ?
-        <div class="card-header candy-stripe">
-            <h3 class="sugar-font">{header}</h3>
+        <div className="card-header candy-stripe">
+            <h3 className="sugar-font">{header}</h3>
         </div> 
         : undefined}
       
-      <div class="card-body">
+      <div className="card-body">
           { children }
       </div>
   </div>
