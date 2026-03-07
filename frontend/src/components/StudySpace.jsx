@@ -1,7 +1,7 @@
 import Badge from "./Badge";
 import AttrBox from "./AttrBox";
 import CandyDivider from "./CandyDivider";
-export default function StudySpace({locationName, locationAddress, rating, description, locationLink}) {
+export default function StudySpace({ name, location, sugar_level, image_url, description , rating, locationLink}) {
     return (
     <div class="container mt-5">
         <div class="card study-card-rush shadow-lg">
@@ -10,8 +10,8 @@ export default function StudySpace({locationName, locationAddress, rating, descr
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                        <h2 class="sugar-font text-pink mb-0">{locationName}</h2>
-                        <p class="text-muted"><i class="bi bi-geo-alt"></i>{locationAddress}</p>
+                        <h2 class="sugar-font text-pink mb-0">{name}</h2>
+                        <p class="text-muted"><i class="bi bi-geo-alt"></i>{location}</p>
                     </div>
                     <div class="rating-bubble">
                         <span class="sugar-font">{rating}</span>
