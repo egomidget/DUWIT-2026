@@ -183,3 +183,24 @@ body {
     background: var(--mint-green);
     color: white;
 }
+
+
+
+
+.facility-pill {
+    background: #fff;
+    border: 2px solid #f8f9fa;
+    padding: 6px 14px;
+    border-radius: 50px;
+    box-shadow: 2px 2px 0px var(--mint-green); /* Retro offset shadow */
+    transition: transform 0.2s ease;
+}
+
+.facility-pill:hover {
+    transform: translateY(-2px);
+    background: var(--glaze-white);
+}
+
+.text-pink {
+    color: var(--strawberry-pink);
+}
