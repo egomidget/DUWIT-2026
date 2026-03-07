@@ -21,6 +21,7 @@ from projectApp.views import study_spaces_api_dumby
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('map_app.urls')),
 ]
 
 from django.contrib import admin
