@@ -8,6 +8,8 @@ def study_sapce_api_dumby(request):
             "id": 1,
             "name": "The Marshmallow Lounge",
             "location": "Sector 4, Candy County",
+            "lat": "55.95581036002576",
+            "long": "-3.1930274625920156",
             "image_url": "https://images.unsplash.com/photo-1497366216548-37526070297c",
             "rating": 4.8,
             "sugar_level": "Quiet",
