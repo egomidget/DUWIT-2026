@@ -3,6 +3,7 @@ import os
 import requests
 from django.http import JsonResponse
 from django.conf import settings
+from .models import Locations
 
 # Create your views here.
 def get_sweet_treats(request):
@@ -24,12 +25,34 @@ def get_sweet_treats(request):
     
     if data.get('status') == 'OK': #populating here
         for place in data.get('results', []):
+            #this is to save to db or get it from there
+            obj, created = Locations.objects.get_or_create(
+                google_place_id=place['place_id'], # The unique fingerprint
+                defaults={
+                    'name': place.get('name'),
+                    'latitude': place['geometry']['location']['lat'],
+                    'longitude': place['geometry']['location']['lng'],
+                    'address': place.get('vicinity'),
+                    'location_type': 'sweet_treat' # Ensuring it's tagged correctly!
+                }
+            )
+            if created:
+                print(f"NEW: Saved {obj.name} to the database!")
+            else:
+                print(f"EXISTING: Found {obj.name} in the database, skipping save.")
+
+            #adding to return list
             treat_spots.append({
-                'name': place.get('name'),
-                'lat': place['geometry']['location']['lat'],
-                'lng': place['geometry']['location']['lng'],
-                'type': 'sweet_treat', # so React knows what pin color to use
-                'address': place.get('vicinity') # Gets the street name
+                'name': obj.name,
+                'lat': obj.latitude,
+                'lng': obj.longitude,
+                'type': obj.location_type,
+                'address': obj.address
             })
             
     return JsonResponse({'treats': treat_spots}) #sending to front end
+
+def checkDbPresence(latitude, longitude):
+    #here i am going to test whether the locations around here are already cached in the db
+    pass
+
