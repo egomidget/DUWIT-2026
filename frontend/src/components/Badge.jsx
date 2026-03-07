@@ -1,7 +1,7 @@
 export default function Badge({children}){
     return (
-        <div class="position-relative">
-            <span class="badge status-badge-mint">{children}</span>
+        <div className="position-relative">
+            <span className="badge status-badge-mint">{children}</span>
         </div>
     );
 };

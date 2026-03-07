@@ -1,5 +1,5 @@
 export default function CandyDivider(){
     return (
-        <hr class="candy-divider"/>
+        <hr className="candy-divider"/>
     )
 } 
