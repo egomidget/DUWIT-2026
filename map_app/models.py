@@ -25,7 +25,7 @@ class Locations(models.Model):
         return f"{self.name} ({self.location_type})"
 
 class SearchedCoordinates(models.Model):
-    lat = models.FloatField()
-    lng = models.FloatField()
+    lati = models.FloatField()
+    longi = models.FloatField()
 
 

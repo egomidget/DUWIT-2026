@@ -4,6 +4,7 @@ import requests
 from django.http import JsonResponse
 from django.conf import settings
 from .models import Locations
+from .models import SearchedCoordinates
 
 # Create your views here.
 def get_sweet_treats(request):
@@ -13,7 +14,7 @@ def get_sweet_treats(request):
     #this is how itll be fetched fetch(`http://127.0.0.1:8000/api/map/treats/?lat=${insert lat variable here}&lng=${insert longitude variable here}&radius=1500`)
     lat = request.GET.get('lat', '54.7651')
     lng = request.GET.get('lng', '-1.5772')
-    radius = request.GET.get('radius', '1500') # Default 1.5km
+    radius = request.GET.get('radius', '3000') # Default 3km
 
     #request to google
     keywords = "bakery|dessert|ice cream|gelato|sweets|pastry|cake|cookies|confectionary|Pâtisserie|Patisserie|sorbet|frozen yoghurt"
@@ -22,7 +23,9 @@ def get_sweet_treats(request):
     data = response.json()
     
     treat_spots = [] #to populate
-    
+    #check db presence
+    #if presence, populate from the db here
+    #else: and then write to the other model
     if data.get('status') == 'OK': #populating here
         for place in data.get('results', []):
             #this is to save to db or get it from there
@@ -44,10 +47,22 @@ def get_sweet_treats(request):
                 'type': obj.location_type,
                 'address': obj.address
             })
+        #update the searched coords
+        new_search = SearchedCoordinates.objects.create(lati =lat, longi=lng)
+        print(f"SUCCESS: Saved search ID {new_search.id} to the logbook!")
             
     return JsonResponse({'treats': treat_spots}) #sending to front end
 
 def checkDbPresence(latitude, longitude):
     #here i am going to test whether the locations around here are already cached in the db
     pass
+    #decide what very small offset ill be using. im thinking i want to have atleast sweet treats within 15min walk showing so lets have a think how that relates. should i extend the radius of the original searches to help this?
+    #add check if there is a value in the db which is in the += square offset range. 
+    #for that above will have 2 filters, one for long one for lat and we have an AND in between!!
+    #if smth appears then return true
 
+
+def updateSearchedDb():
+    #here i will add the just searched coordinated to the SearchedCoordinates model
+    pass
+    
