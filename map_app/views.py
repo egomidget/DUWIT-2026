@@ -5,19 +5,20 @@ from django.http import JsonResponse
 from django.conf import settings
 
 # Create your views here.
-def get_sweet_treats(reuqest):
+def get_sweet_treats(request):
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     print(f"DEBUG: My key is {api_key}") # This will show up in your TERMINAL, not the browser
 
     #centering in durham for now
-    lat = "54.7651"
-    lng = "-1.5772"
+    lat = "54.768115286762736" 
+    lng = "-1.5733532842088882"
     
     #2km from durham center search radius for now
-    radius = 5000 
+    radius = 2000 
 
     #request to google
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=2{radius}&type=cafe&keyword=bakery|dessert|sweets&key={api_key}"
+    keywords = "bakery|dessert|ice cream|gelato|sweets|pastry|cake|cookies|confectionary|Pâtisserie|Patisserie|sorbet|frozen yoghurt"
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius={radius}&keyword={keywords}&key={api_key}"
     response = requests.get(url)
     data = response.json()
     
