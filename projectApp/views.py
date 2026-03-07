@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 # Create your views here.
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Studyspaces
@@ -24,6 +25,13 @@ def space_options(request):
         "ambience": [choice[0] for choice in Studyspaces.ambience_choices],
         "rating": [choice[0] for choice in Studyspaces.rating_choices],
     })
+
+
+@api_view(['GET'])
+def studyspace_detail(request, id):
+    space = get_object_or_404(Studyspaces, id=id)
+    serializer = SpacesSerializer(space)
+    return Response(serializer.data)
 
 def study_sapce_api_dumby(request):
     data = {
