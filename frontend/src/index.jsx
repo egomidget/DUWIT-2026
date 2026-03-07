@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router/dom";
 
 import App from "./App";
 import StudySpaceDetail from "./pages/StudySpaceDetail";
+import AddStudySpace from "./pages/AddStudySpace";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/space/:id",
     element: <StudySpaceDetail />
+  },
+  {
+    path: "/space/add",
+    element: <AddStudySpace />
   }
 ]);
 
