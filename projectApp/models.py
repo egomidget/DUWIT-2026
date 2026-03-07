@@ -74,16 +74,8 @@ class Studyspaces(models.Model):
         choices=rating_choices,
         null=True, blank=True)
     
-class facilities(models.Model): 
-    venting_machine = models.BooleanField(default = False)
-    microwave = models.BooleanField(default = False)
-    water = models.BooleanField(default = False)
-    aircon = models.BooleanField(default = False)
-    toilets = models.BooleanField(default = False)
-    hottap = models.BooleanField(default = False)
-    meetingroom = models.BooleanField(default = False)
-    printer = models.BooleanField(default = False)
-    pcs = models.BooleanField(default = False)
-
+class Facilities(models.Model): 
+    name =models.CharField(max_length = 1000, null=True)
+    
     def __str__(self):
         return self.name
