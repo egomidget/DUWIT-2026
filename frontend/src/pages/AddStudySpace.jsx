@@ -8,7 +8,6 @@ export default function AddStudySpace() {
     const [options, setOptions] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // 1. Sync with Django Choices
     useEffect(() => {
         fetch('http://localhost:8000/api/studyspaces/options/')
             .then(res => res.json())
@@ -21,19 +20,53 @@ export default function AddStudySpace() {
         setValue('long', lng);
     };
 
-    const onSubmit = async (data) => {
-        setIsSubmitting(true);
+    // const onSubmit = async (data) => {
+    //     setIsSubmitting(true);
+    //     try {
+    //         const response = await fetch('http://localhost:8000/api/map/add-study-spot/', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify(data),
+    //         });
+    //         if (response.ok) alert("Race Track Created! 🍬");
+    //     } catch (error) {
+    //         console.error("Submission failed", error);
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    // };
+
+        const onSubmit = async (data) => {
+        const formattedData = {
+            name: data.name,
+            description: data.description,
+            wifi: data.wifi,
+            plugsockets: data.plugsockets,
+
+            location: {
+                name: data.name,
+                latitude: parseFloat(data.lat), 
+                longitude: parseFloat(data.long),
+                address: data.address || "Unknown Location",
+                location_type: 'study'
+            }
+        };
+
         try {
             const response = await fetch('http://localhost:8000/api/studyspaces/create/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                body: JSON.stringify(formattedData),
             });
-            if (response.ok) alert("Race Track Created! 🍬");
-        } catch (error) {
-            console.error("Submission failed", error);
-        } finally {
-            setIsSubmitting(false);
+
+            if (response.ok) {
+                alert("Race Track Created! 🏁");
+            } else {
+                const errorData = await response.json();
+                console.error("Backend validation glitch:", errorData);
+            }
+        } catch (err) {
+            console.error("Connection error:", err);
         }
     };
 
