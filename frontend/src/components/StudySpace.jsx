@@ -12,7 +12,7 @@ export default function StudySpace({ locationLink, ...props}) {
                 <div className="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h2 className="sugar-font text-pink mb-0">{props.name}</h2>
-                        <p className="text-muted"><i className="bi bi-geo-alt"></i>{props.location}</p>
+                        <p className="text-muted"><i className="bi bi-geo-alt"></i>{props.location.latitude}, {props.location.longitude}</p>
                     </div>
                     <div className="rating-bubble">
                         <span className="sugar-font">{props.rating}</span>
