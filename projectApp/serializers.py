@@ -10,3 +10,5 @@ class SpacesSerializer(serializers.ModelSerializer):
 
     def get_opening_hours(self, obj):
         return obj.get_opening_hours()
+    
+

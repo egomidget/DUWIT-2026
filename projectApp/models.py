@@ -1,6 +1,15 @@
 from django.db import models
 
+
 class Studyspaces(models.Model): 
+
+    location = models.ForeignKey(
+    'map_app.Locations',
+    on_delete=models.CASCADE,
+    related_name='study_info',
+    null=True,
+    blank=True
+)
 
     temp_choices = [
         ("Artic", "Artic"), 
@@ -90,11 +99,13 @@ class Studyspaces(models.Model):
 
         return f"{self.opening_time} - {self.closing_time}"
     
-    
+
     
 class Facilities(models.Model): 
     name =models.CharField(max_length = 1000, null=True)
     
     def __str__(self):
         return self.name
+
+
     
