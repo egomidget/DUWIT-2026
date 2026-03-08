@@ -11,7 +11,7 @@ export default function StudySpaceDetail(){
     const [sweetLocations, setSweetLocations] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/dumby-endpoint-space/${id}/`)
+        fetch(`http://localhost:8000/api/studyspaces/${id}/`)
             .then((res) => res.json())
             .then((data) => setSpace(data))
             .catch((err) => console.error("Glitch in the system!", err));
@@ -33,6 +33,12 @@ export default function StudySpaceDetail(){
         return <div className="sugar-font text-center mt-5">Loading the Starting Grid...</div>;
     }
 
+    const facilityKeys = [
+        "indoors", "wifi", "plugsockets", "in_house_food", 
+        "pay_to_enter", "public", "accessibility"
+    ];
+
+    const activeFacilities = facilityKeys.filter(key => space[key] === true);
     
 
     return (
@@ -42,7 +48,7 @@ export default function StudySpaceDetail(){
                 <div className='row justify-content-center align-items-center'>
                     <div className='row'>
                         <div className='col-md-6 justify-content-center py-4'>
-                            <Facilities items={space.facilities} />
+                            <Facilities items={activeFacilities} />
                         </div>
                     </div>
 
