@@ -17,11 +17,12 @@ import math
 @api_view(['GET'])
 def get_combined_study_spots(request):
     study_locations = Locations.objects.filter(location_type='study').select_related('study_info')
+    combined_list = []
     for spot in study_locations:
         combined_obj = model_to_dict(spot)
 
-        if hasattr(spot, 'studyspaces'):
-            friend_data = model_to_dict(spot.studyspaces)
+        if hasattr(spot, 'study_info'):
+            friend_data = model_to_dict(spot.study_info)
             
             # getting rid of their id we only want mine
             friend_data.pop('id', None)

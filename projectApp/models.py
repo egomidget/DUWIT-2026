@@ -3,12 +3,12 @@ from django.db import models
 
 class Studyspaces(models.Model): 
 
-    location = models.ForeignKey(
+    location = models.OneToOneField(
     'map_app.Locations',
     on_delete=models.CASCADE,
     related_name='study_info',
-    null=True,
-    blank=True
+    null=True,   
+    blank=True   
 )
 
     temp_choices = [
