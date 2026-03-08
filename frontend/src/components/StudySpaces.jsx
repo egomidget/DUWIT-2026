@@ -6,7 +6,7 @@ export default function StudySpaces() {
 
     // Example fetch call in your StudySpaces component
     useEffect(() => {
-        fetch('http://localhost:8000/api/dumby-endpoint/')
+        fetch('http://localhost:8000/api/studyspaces/')
             .then(res => res.json())
             .then(data => setSpaces(data));
     }, []);
