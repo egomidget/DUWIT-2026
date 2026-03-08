@@ -82,8 +82,19 @@ class Studyspaces(models.Model):
         choices=rating_choices,
         null=True, blank=True)
     
+
+    def get_opening_hours(self):
+
+        if not self.opening_time or not self.closing_time:
+            return "Opening hours not set"
+
+        return f"{self.opening_time} - {self.closing_time}"
+    
+    
+    
 class Facilities(models.Model): 
     name =models.CharField(max_length = 1000, null=True)
     
     def __str__(self):
         return self.name
+    
