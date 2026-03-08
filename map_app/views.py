@@ -15,7 +15,7 @@ import math
 # GET !!!
 #all the combo study spots 
 @api_view(['GET'])
-def get_ombined_study_spots(request):
+def get_combined_study_spots(request):
     study_locations = Locations.objects.filter(location_type='study').select_related('study_info')
     for spot in study_locations:
         combined_obj = model_to_dict(spot)
@@ -119,8 +119,8 @@ def checkDbPresence(latitude, longitude, placeToCheck):
             latitude__gte=latitude - la_offset,
             latitude__lte=latitude + la_offset,
             longitude__gte=longitude - lo_offset,
-            longitude__lte=longitude + lo_offset
-            location_type=s'weet_treat' #we only wanna return the sweet treatzies here
+            longitude__lte=longitude + lo_offset,
+            location_type='sweet_treat' #we only wanna return the sweet treatzies here
         )
 
     if in_search_area.exists():
