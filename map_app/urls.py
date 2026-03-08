@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('treats/', views.get_sweet_treats, name='get_treats'),
+    path('add-location/', views.create_location, name='add_location'),
 ]

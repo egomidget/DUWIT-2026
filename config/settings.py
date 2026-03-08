@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "corsheaders",
     'map_app',
     'projectApp',
-    "rest_framework",
 ]
 
 MIDDLEWARE = [

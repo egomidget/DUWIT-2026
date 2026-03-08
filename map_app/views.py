@@ -5,8 +5,12 @@ from django.http import JsonResponse
 from django.conf import settings
 from .models import Locations
 from .models import SearchedCoordinates
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import LocationSerializer
 
-# Create your views here.
+# GET !!!
 def get_sweet_treats(request):
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
    
@@ -65,4 +69,24 @@ def checkDbPresence(latitude, longitude):
 def updateSearchedDb():
     #here i will add the just searched coordinated to the SearchedCoordinates model
     pass
+
+#Post !!!
+#post new study location
+@api_view(['POST']) 
+def create_location(request):
+    custom_data = request.data.copy()
+    custom_data['name'] = "Study Space" 
+    custom_data['location_type'] = "study"
+    custom_data['address'] = None
+    serializer = LocationSerializer(data=custom_data)
+    
+    if serializer.is_valid():
+        serializer.save()
+        
+        return Response({
+            "message": "Study space successfully added!", 
+            "data": serializer.data
+        }, status=status.HTTP_201_CREATED)
+    print("DEBUG errors:", serializer.errors)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
