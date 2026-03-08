@@ -2,9 +2,13 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 # Create your views here.
-from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
 from .models import Studyspaces
 from .serializers import SpacesSerializer
 
@@ -25,6 +29,15 @@ def space_options(request):
         "ambience": [choice[0] for choice in Studyspaces.ambience_choices],
         "rating": [choice[0] for choice in Studyspaces.rating_choices],
     })
+
+
+@api_view(['POST'])
+def Studypace_create(request): 
+    serializer = SpacesSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
