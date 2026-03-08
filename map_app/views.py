@@ -38,6 +38,32 @@ def get_combined_study_spots(request):
 
     return Response({'study_spots': combined_list})
 
+#filtered study location
+#reuqest thing should look like http://127.0.0.1:8000/api/map/study-spots/nearby/?lat=54.773&lng=-1.576
+@api_view(['GET'])
+def get_filtered_study_spots(request):
+    full_response = get_combined_study_spots(request._request)
+    all_spots = full_response.data.get('study_spots', [])
+
+    # getting the points from the url
+    try:
+        user_lat = float(request.GET.get('lat'))
+        user_lng = float(request.GET.get('lng'))
+    except (TypeError, ValueError):
+        return Response({"error": "Missing or invalid lat/lng parameters"}, status=400)
+
+    la_offset, lo_offset = get_lat_lng_offsets(user_lat)
+
+    filtered_list = []
+    for spot in all_spots:
+        is_inside_lat = (user_lat - la_offset) <= spot['latitude'] <= (user_lat + la_offset)
+        is_inside_lng = (user_lng - lo_offset) <= spot['longitude'] <= (user_lng + lo_offset)
+
+        if is_inside_lat and is_inside_lng:
+            filtered_list.append(spot)
+
+    return Response({'study_spots': filtered_list})
+
 #the location filtered sweet treats!
 def get_sweet_treats(request):
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
