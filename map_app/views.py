@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LocationSerializer
+import math
 
 # GET !!!
 def get_sweet_treats(request):
@@ -16,59 +17,103 @@ def get_sweet_treats(request):
    
     #getting the parameters tho with a default set to billy b
     #this is how itll be fetched fetch(`http://127.0.0.1:8000/api/map/treats/?lat=${insert lat variable here}&lng=${insert longitude variable here}&radius=1500`)
-    lat = request.GET.get('lat', '54.7651')
-    lng = request.GET.get('lng', '-1.5772')
+    lat = float(request.GET.get('lat', '54.7651'))
+    lng = float(request.GET.get('lng', '-1.5772'))
     radius = request.GET.get('radius', '3000') # Default 3km
-
-    #request to google
-    keywords = "bakery|dessert|ice cream|gelato|sweets|pastry|cake|cookies|confectionary|Pâtisserie|Patisserie|sorbet|frozen yoghurt"
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius={radius}&keyword={keywords}&key={api_key}"
-    response = requests.get(url)
-    data = response.json()
     
     treat_spots = [] #to populate
+    
     #check db presence
-    #if presence, populate from the db here
-    #else: and then write to the other model
-    if data.get('status') == 'OK': #populating here
-        for place in data.get('results', []):
-            #this is to save to db or get it from there
-            obj, created = Locations.objects.get_or_create(
-                google_place_id=place['place_id'], # The unique fingerprint
-                defaults={
-                    'name': place.get('name'),
-                    'latitude': place['geometry']['location']['lat'],
-                    'longitude': place['geometry']['location']['lng'],
-                    'address': place.get('vicinity'),
-                    'location_type': 'sweet_treat' # Ensuring it's tagged correctly!
-                }
-            )
-            #adding to return list
+    if checkDbPresence(lat, lng, SearchedCoordinates) is not None:  #checking if it was returned
+        #if nearby searched coordinate present, populate from the db here
+        print("🟢 CACHE HIT! Loading from DB...")
+        in_radius_locations = checkDbPresence(lat,lng, Locations)
+
+        for spot in in_radius_locations:
             treat_spots.append({
-                'name': obj.name,
-                'lat': obj.latitude,
-                'lng': obj.longitude,
-                'type': obj.location_type,
-                'address': obj.address
+                'name': spot.name,
+                'lat': spot.latitude,
+                'lng': spot.longitude,
+                'type': spot.location_type,
+                'address': spot.address
             })
-        #update the searched coords
-        new_search = SearchedCoordinates.objects.create(lati =lat, longi=lng)
-        print(f"SUCCESS: Saved search ID {new_search.id} to the logbook!")
-            
+    else:
+        #else: and then write to the other model
+        print("🔴 CACHE MISS! Hitting Google API...")
+
+
+        #request to google
+        keywords = "bakery|dessert|ice cream|gelato|sweets|pastry|cake|cookies|confectionary|Pâtisserie|Patisserie|sorbet|frozen yoghurt"
+        url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius={radius}&keyword={keywords}&key={api_key}"
+        response = requests.get(url)
+        data = response.json()
+
+        if data.get('status') == 'OK': #populating here
+            for place in data.get('results', []):
+                #this is to save to db or get it from there
+                obj, created = Locations.objects.get_or_create(
+                    google_place_id=place['place_id'], # The unique fingerprint
+                    defaults={
+                        'name': place.get('name'),
+                        'latitude': place['geometry']['location']['lat'],
+                        'longitude': place['geometry']['location']['lng'],
+                        'address': place.get('vicinity'),
+                        'location_type': 'sweet_treat' # Ensuring it's tagged correctly!
+                    }
+                )
+                #adding to return list
+                treat_spots.append({
+                    'name': obj.name,
+                    'lat': obj.latitude,
+                    'lng': obj.longitude,
+                    'type': obj.location_type,
+                    'address': obj.address
+                })
+
+            #update the searched coords db
+            new_search = SearchedCoordinates.objects.create(lati =lat, longi=lng)
+            print(f"SUCCESS: Saved search ID {new_search.id} to the logbook!")
+                
     return JsonResponse({'treats': treat_spots}) #sending to front end
 
-def checkDbPresence(latitude, longitude):
+def checkDbPresence(latitude, longitude, placeToCheck):
     #here i am going to test whether the locations around here are already cached in the db
-    pass
-    #decide what very small offset ill be using. im thinking i want to have atleast sweet treats within 15min walk showing so lets have a think how that relates. should i extend the radius of the original searches to help this?
-    #add check if there is a value in the db which is in the += square offset range. 
+
+    #1.5km offset:
+    la_offset, lo_offset = get_lat_lng_offsets(latitude)
+    #add check if there is a value in the db which is in the +- square offset range. 
     #for that above will have 2 filters, one for long one for lat and we have an AND in between!!
-    #if smth appears then return true
+    if placeToCheck.__name__ == 'SearchedCoordinates':
+        in_search_area = placeToCheck.objects.filter(
+            lati__gte=latitude - la_offset,
+            lati__lte=latitude + la_offset,
+            longi__gte=longitude - lo_offset,
+            longi__lte=longitude + lo_offset
+        )
+    # Otherwise, we are searching the 'Locations' model (uses latitude/longitude)
+    else:
+        in_search_area = placeToCheck.objects.filter(
+            latitude__gte=latitude - la_offset,
+            latitude__lte=latitude + la_offset,
+            longitude__gte=longitude - lo_offset,
+            longitude__lte=longitude + lo_offset
+        )
 
+    if in_search_area.exists():
+        return in_search_area
+    return None
 
-def updateSearchedDb():
-    #here i will add the just searched coordinated to the SearchedCoordinates model
-    pass
+#calculating the latitude longitude difference:
+def get_lat_lng_offsets(lat, distance_km=1.5):
+    R = 6371.0 #earth radius (km)
+    
+    #offset latitude is constant
+    lat_offset = (distance_km / R) * (180 / math.pi)
+    
+    lat_radians = math.radians(lat) #convert to radians bc the math.cos
+    lng_offset = (distance_km / (R * math.cos(lat_radians))) * (180 / math.pi)
+    
+    return lat_offset, lng_offset
 
 #Post !!!
 #post new study location
