@@ -73,7 +73,7 @@ class Studyspaces(models.Model):
         blank=True, 
         null = True
 )
-    description = models.CharField(max_length= 1000) 
+    description = models.CharField(max_length= 1000, blank=True) 
     ambience = models.CharField(
     max_length=1000,
     choices=ambience_choices,

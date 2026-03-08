@@ -9,8 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LocationSerializer
+from projectApp.serializers import SpacesSerializer
 from django.forms.models import model_to_dict
 import math
+from django.db import transaction
+from projectApp.models import Studyspaces
 
 # GET !!!
 #all the combo study spots 
@@ -155,8 +158,48 @@ def create_location(request):
         
         return Response({
             "message": "Study space successfully added!", 
+            "id": location_obj.id,
             "data": serializer.data
         }, status=status.HTTP_201_CREATED)
     print("DEBUG errors:", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#post combo new study place
+@api_view(['POST']) 
+def create_study_spot(request):
+    raw_data = request.data
+    
+    #try = if one fails both do
+    try:
+        with transaction.atomic():
+            
+            #mapping latitude and longitude
+            loc_input = {
+                'name': raw_data.get('name', 'New Study Space'),
+                'latitude': raw_data.get('lat'),
+                'longitude': raw_data.get('long'), 
+                'location_type': 'study'
+            }
+            
+            loc_serializer = LocationSerializer(data=loc_input)
+            if loc_serializer.is_valid(raise_exception=True):
+                location_obj = loc_serializer.save()
+            
+            
+            amenities_input = raw_data.copy()
+            amenities_input['location'] = location_obj.id 
+            
+            amenities_serializer = SpacesSerializer(data=amenities_input)
+            if amenities_serializer.is_valid(raise_exception=True):
+                amenities_serializer.save()
+
+            return Response({
+                "status": "Happy yay",
+                "message": "Location and Amenities tied together!",
+                "id": location_obj.id
+            }, status=201)
+
+    except Exception as e:
+        # if smth goes wrong then nothing is saved to the db
+        return Response({"error": str(e)}, status=400)
     
