@@ -9,9 +9,32 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LocationSerializer
+from django.forms.models import model_to_dict
 import math
 
 # GET !!!
+#all the combo study spots 
+@api_view(['GET'])
+def get_ombined_study_spots(request):
+    study_locations = Locations.objects.filter(location_type='study').select_related('study_info')
+    for spot in study_locations:
+        combined_obj = model_to_dict(spot)
+
+        if hasattr(spot, 'studyspaces'):
+            friend_data = model_to_dict(spot.studyspaces)
+            
+            # getting rid of their id we only want mine
+            friend_data.pop('id', None)
+            friend_data.pop('location', None) 
+            
+            #merges the objects
+            combined_obj = {**combined_obj, **friend_data}
+
+        combined_list.append(combined_obj)
+
+    return Response({'study_spots': combined_list})
+
+#the location filtered sweet treats!
 def get_sweet_treats(request):
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
    
@@ -97,6 +120,7 @@ def checkDbPresence(latitude, longitude, placeToCheck):
             latitude__lte=latitude + la_offset,
             longitude__gte=longitude - lo_offset,
             longitude__lte=longitude + lo_offset
+            location_type=s'weet_treat' #we only wanna return the sweet treatzies here
         )
 
     if in_search_area.exists():
