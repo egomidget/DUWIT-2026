@@ -1,4 +1,7 @@
 export default function AttrBox({title, value, children}){
+    if (!value) {
+        return undefined
+    }
     return (
         <div className="col">
             <div className="attr-box">
