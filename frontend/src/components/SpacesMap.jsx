@@ -11,8 +11,6 @@ const candyIcon = new L.Icon({
 export default function SpacesMap({ spaces, center }) {
     const defaultCenter = [51.505, -0.09]; 
 
-    
-
     if (!spaces) {
         return <div className="sugar-font text-center mt-5">Loading the sweet treats map...</div>;
     }
@@ -41,7 +39,7 @@ export default function SpacesMap({ spaces, center }) {
                                     {space.name}
                                 </strong>
                                 <p className="small mb-1">{space.address}</p>
-                                <a href={`/space/${space.id}`} className="btn btn-sm btn-sugar py-0">Race Here!</a>
+                                <a href={`/space/${space.id}`} className="btn btn-sm btn-sugar py-0">Suagr</a>
                             </div>
                         </Popup>
                     </Marker>

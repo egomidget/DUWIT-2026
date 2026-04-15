@@ -6,6 +6,7 @@ import { RouterProvider } from "react-router/dom";
 import App from "./App";
 import StudySpaceDetail from "./pages/StudySpaceDetail";
 import AddStudySpace from "./pages/AddStudySpace";
+import Search from "./pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
   {
     path: "/space/add",
     element: <AddStudySpace />
-  }
+  },
+  {
+    path: "/search",
+    element: <Search />
+  },
 ]);
 
 const root = document.getElementById("root");

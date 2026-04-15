@@ -15,7 +15,7 @@ export default function StudySpaceDetail() {
             .then((res) => res.json())
             .then((data) => setSpace(data))
             .catch((err) => console.error("Glitch in the system!", err));
-    }, [id]);
+    }, [id]); // only changes on id change from param 
 
     useEffect(() => {
         const lat = space?.location?.latitude;
@@ -27,7 +27,7 @@ export default function StudySpaceDetail() {
                 .then((data) => setSweetLocations(data))
                 .catch((err) => console.error("Treat fetch failed!", err));
         }
-    }, [space]);
+    }, [space]); // changes when setSpace is called, this happens in the first useEffect 
 
     if (!space || !space.location) {
         return <div className="sugar-font text-center mt-5">Warming up the engines...</div>;
@@ -55,6 +55,7 @@ export default function StudySpaceDetail() {
                     
                     <div className='row p-5'>
                         <div className='col'>
+                            {/* Use the nested location coordinates here */}
                             <SpacesMap 
                                 spaces={sweetLocations.treats || []} 
                                 center={[space.location.latitude, space.location.longitude]} 

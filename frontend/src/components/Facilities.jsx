@@ -9,7 +9,7 @@ const iconMap = {
     "parking": "bi-p-circle",
     "ac": "bi-thermometer-snow",
     "microwave": "bi-cup-hot",
-    "printer": "bi-printer"
+    "printer": "bi-printer",
 };
 
 export default function Facilities({ items }) {
