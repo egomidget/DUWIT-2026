@@ -7,6 +7,7 @@ import App from "./App";
 import StudySpaceDetail from "./pages/StudySpaceDetail";
 import AddStudySpace from "./pages/AddStudySpace";
 import Search from "./pages/Search";
+import SpinnerPage from "./pages/SpinnerPage";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <Search />
+  },
+  {
+    path: "/spinner",
+    element: <SpinnerPage />
   },
 ]);
 
