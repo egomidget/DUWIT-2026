@@ -8,7 +8,7 @@ const SpinnerPage = () => {
     const [prizes, setPrizes] = useState(['Gummy Bear', 'Lollipop', 'Cotton Candy', 'Choco Bar', 'Sour Patch', 'Jelly Bean', 'Gumdrop', 'Taffy']);
 
     useEffect(() => {
-        fetch(`http://local:8000/api/prizes`)
+        fetch(`/api/prizes`)
             .then((res) => res.json())
             .then((data) => setPrizes(data))
             .catch((err) => console.log("Glitch in the system!", err));

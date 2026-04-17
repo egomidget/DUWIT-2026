@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Modal, Button } from 'react-bootstrap';
 import './CandySpinner.css';
+import PrizeForm from './PrizeForm';
 
 // segments to be set via api.
-const CandySpinner = ({ segments = ['Gummy Bear', 'Lollipop', 'Cotton Candy', 'Choco Bar', 'Sour Patch', 'Jelly Bean'] }) => {
+export default function CandySpinner ({ segments = ['Gummy Bear', 'Lollipop', 'Cotton Candy', 'Choco Bar', 'Sour Patch', 'Jelly Bean'] }) {
     const [spinning, setSpinning] = useState(false);
     const [rotation, setRotation] = useState(0);
     const [showModal, setShowModal] = useState(false);
@@ -62,22 +62,11 @@ const CandySpinner = ({ segments = ['Gummy Bear', 'Lollipop', 'Cotton Candy', 'C
                 {spinning ? 'SPINNING...' : 'SPIN THE WHEEL!'}
             </button>
 
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered className="candy-modal">
-                <Modal.Header closeButton className="candy-stripe">
-                    <Modal.Title className="sugar-font text-white">Sweet Victory!</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="text-center p-5">
-                    <h2 className="sugar-font text-pink mb-4">You Won:</h2>
-                    <div className="winner-display sugar-font">{winner}</div>
-                </Modal.Body>
-                <Modal.Footer className="justify-content-center">
-                    <Button className="btn-sugar" onClick={() => setShowModal(false)}>
-                        YUMMY!
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <PrizeForm 
+                winner={winner} 
+                showModal={showModal} 
+                setShowModal={setShowModal} 
+            />
         </div>
     );
 };
-
-export default CandySpinner;
