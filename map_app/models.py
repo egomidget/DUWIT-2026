@@ -29,3 +29,13 @@ class SearchedCoordinates(models.Model):
     longi = models.FloatField()
 
 
+#spinner 
+class WinnerLog(models.Model):
+    email = models.EmailField()
+    prize = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.email} won {self.prize}"
+
+

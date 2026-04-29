@@ -15,6 +15,18 @@ import math
 from django.db import transaction
 from projectApp.models import Studyspaces
 
+#for the spinner get 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+#for the spinner post 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from .models import WinnerLog
+
 # GET !!!
 #all the combo study spots 
 @api_view(['GET'])
@@ -229,3 +241,43 @@ def create_study_spot(request):
         # if smth goes wrong then nothing is saved to the db
         return Response({"error": str(e)}, status=400)
     
+#spinner get 
+@api_view(['GET'])
+def prizes(request):
+    return Response(["Gummy Bear", "Lollipop", "Cotton Candy", "Choco Bar"])
+
+#spinner post 
+
+VALID_PRIZES = ["Gummy Bear", "Lollipop", "Cotton Candy", "Choco Bar"]
+
+@api_view(['POST'])
+def log_winner(request):
+    email = request.data.get('email')
+    prize = request.data.get('prize')
+
+    if not email or not prize:
+        return Response(
+            {"error": "Email and prize are required."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        validate_email(email)
+    except ValidationError:
+        return Response(
+            {"error": "Invalid email address."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if prize not in VALID_PRIZES:
+        return Response(
+            {"error": "Invalid prize."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    WinnerLog.objects.create(email=email, prize=prize)
+
+    return Response(
+        {"message": "Winner logged successfully"},
+        status=status.HTTP_201_CREATED
+    )
