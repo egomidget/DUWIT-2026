@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from projectApp.views import study_spaces_api_dumby, study_sapce_api_dumby
 from map_app.views import prizes
-from map_app.views import prizes, log_winner
+from map_app.views import prizes, log_winner, get_prize_leaderboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/prizes', prizes, name='prizes'),
 
     path('api/log-winner/', log_winner, name='log-winner'),
+    path('api/log-winner/leaderboard/', get_prize_leaderboard, name='leaderboard'),
     
 
     

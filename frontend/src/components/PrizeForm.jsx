@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, Button, Form } from 'react-bootstrap';
 
-export default function PrizeForm({ winner, showModal, setShowModal }) {
+export default function PrizeForm({ winner, showModal, setShowModal, onSuccess }) {
     const [formData, setFormData] = useState({
         email: '',
         prize: ''
@@ -35,6 +35,7 @@ export default function PrizeForm({ winner, showModal, setShowModal }) {
 
             if (response.ok) {
                 console.log('Winner logged successfully');
+                if (onSuccess) onSuccess();
             } else {
                 console.error('Failed to log winner');
             }

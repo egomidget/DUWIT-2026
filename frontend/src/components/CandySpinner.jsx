@@ -3,7 +3,7 @@ import './CandySpinner.css';
 import PrizeForm from './PrizeForm';
 
 // segments to be set via api.
-export default function CandySpinner ({ segments = ['Gummy Bear', 'Lollipop', 'Cotton Candy', 'Choco Bar', 'Sour Patch', 'Jelly Bean'] }) {
+export default function CandySpinner ({ segments = ['Gummy Bear', 'Lollipop', 'Cotton Candy', 'Choco Bar', 'Sour Patch', 'Jelly Bean'], onWin }) {
     const [spinning, setSpinning] = useState(false);
     const [rotation, setRotation] = useState(0);
     const [showModal, setShowModal] = useState(false);
@@ -66,6 +66,7 @@ export default function CandySpinner ({ segments = ['Gummy Bear', 'Lollipop', 'C
                 winner={winner} 
                 showModal={showModal} 
                 setShowModal={setShowModal} 
+                onSuccess={onWin}
             />
         </div>
     );
