@@ -14,6 +14,8 @@ from django.forms.models import model_to_dict
 import math
 from django.db import transaction
 from projectApp.models import Studyspaces
+from django.db.models import Count
+from django.views.decorators.csrf import csrf_exempt
 
 #for the spinner get 
 from rest_framework.decorators import api_view
@@ -244,12 +246,13 @@ def create_study_spot(request):
 #spinner get 
 @api_view(['GET'])
 def prizes(request):
-    return Response(["Gummy Bear", "Lollipop", "Cotton Candy", "Choco Bar"])
+    return Response(["Gummy Bear", "Lollipop", "Cotton Candy", "Choco Bar", "Cookie", "Donut", "Jelly Bean"])
 
 #spinner post 
 
-VALID_PRIZES = ["Gummy Bear", "Lollipop", "Cotton Candy", "Choco Bar"]
+VALID_PRIZES = ["Gummy Bear", "Lollipop", "Cotton Candy", "Choco Bar", "Cooke", "Donut", "Jelly Bean"]
 
+@csrf_exempt
 @api_view(['POST'])
 def log_winner(request):
     email = request.data.get('email')
@@ -281,3 +284,22 @@ def log_winner(request):
         {"message": "Winner logged successfully"},
         status=status.HTTP_201_CREATED
     )
+
+#winner log get 
+
+@api_view(['GET'])
+def get_prize_leaderboard(request):
+    leaderboard = (
+        WinnerLog.objects.values('email')
+        .annotate(total_wins=Count('id'))
+        .order_by('-total_wins')[:5]
+    )
+    cleaned_leaderboard = [
+        {
+            "display_name": entry['email'].split('@')[0], # The "sarifishh" part
+            "total_wins": entry['total_wins']
+        } 
+        for entry in leaderboard
+    ]
+    
+    return Response(cleaned_leaderboard)
